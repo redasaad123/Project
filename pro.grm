@@ -1,0 +1,83 @@
+﻿"Start Symbol" = <program>
+               
+ !----------Terminal----
+Id =['_']|{letter}{alphanumeric}*
+Digit=('+'|'-')?{digit}('.'{digit})? 
+!--------Rulies----              
+<program>::= '(' <stmt_list> ')'
+
+          
+<stmt_list>::= <concept>
+             |<concept><stmt_list>
+             
+<concept>::= <assign>
+          |<if_stmt>
+          |<for_stmt>
+          
+          
+          
+<assign>::= <id>'='<expr>
+         
+<id>::= 'Id'
+     
+<expr>::= <expr>'+'<term> 
+       |<expr>'-'<term>
+       |<term>
+       
+<term>::= <term>'*'<factor>
+       |<term>'/'<factor>
+       |<factor>
+       
+<factor>::= <factor>'**'<exp>
+         |<exp>
+         
+<exp>::= '('<expr>')'
+      |<id>
+      |<digit>
+      
+<digit>::='Digit'
+        
+!_________If______-
+<if_stmt>::= 'if' '('<cond>')' '{'<stmt_list>'}'
+          |'if' '('<cond>')' '{'<stmt_list>'}' <stmt_list>
+          
+<cond>::=<expr><op><expr>
+       
+<op>::= '<'|'>'|'=='|'!='
+     
+!--------for--------
+
+<for_stmt>::= 'for' '('<data><assign>','<cond>','<step>')' '(' <stmt_list> ')'
+           
+<data>::=int|double|float|string
+       
+<step>::='--'<id>
+       |<id>'--'
+       |<id>'++'
+       |'++'<id>
+       |<assign>
+!______________method_decl__-
+          
+‏<variable_decl> ::= <data_type> <id> 
+                   
+‏<data_type> ::= int | float | double | string
+
+<method_decl> ::= <return_type> <method_name> '^' <parameter_list> '^' 'open' <variable_decl_list> <stmt_list> 'close'  
+                
+ <return_type> ::= int | float | double | string | void 
+                 
+ <method_name> ::= 'Id' 
+                 
+ <parameter_list> ::= <parameter>                   
+                   | <parameter> ',' <parameter_list>  
+                                      
+ <parameter> ::= <data_type> <id>  
+                                                    
+ <variable_decl_list> ::= <variable_decl>                         
+                      | <variable_decl> <variable_decl_list>
+                      
+!________________call
+<‏method_call> ::= <id> '^' <argument_list> '^' 
+                 
+‏<argument_list> ::= <expr> ‏                  
+                  | <expr> ',' <argument_list>
