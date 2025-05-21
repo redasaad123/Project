@@ -140,16 +140,18 @@ namespace com.calitha.goldparser
     public class MyParser
     {
         private LALRParser parser;
-        ListBox listBox;
+        ListBox listBox1;
+        ListBox listBox2;
 
-        public MyParser(string filename , ListBox listBox)
+        public MyParser(string filename , ListBox listBox1 , ListBox listBox2 )
         {
             FileStream stream = new FileStream(filename,
                                                FileMode.Open, 
                                                FileAccess.Read, 
                                                FileShare.Read);
 
-            this.listBox = listBox;
+            this.listBox1 = listBox1;
+            this.listBox2 = listBox2;
             Init(stream);
             stream.Close();
         }
@@ -179,6 +181,8 @@ namespace com.calitha.goldparser
 
             parser.OnTokenError += new LALRParser.TokenErrorHandler(TokenErrorEvent);
             parser.OnParseError += new LALRParser.ParseErrorHandler(ParseErrorEvent);
+            parser.OnTokenRead += new LALRParser.TokenReadHandler(TokenReadEvent);
+
         }
 
         public void Parse(string source)
@@ -629,10 +633,19 @@ namespace com.calitha.goldparser
         private void ParseErrorEvent(LALRParser parser, ParseErrorEventArgs args)
         {
             string message = $"Parse error caused by token: ' {args.UnexpectedToken.ToString()} ' , in line  {args.UnexpectedToken.Location.LineNr} " ;
-            listBox.Items.Add(message);
+            listBox1.Items.Add(message);
             string message2 = $"Expected token: ' {args.ExpectedTokens.ToString()} ' ";
-            listBox.Items.Add(message2);
+            listBox1.Items.Add(message2);
             //todo: Report message to UI?
+        }
+
+
+        private void TokenReadEvent(LALRParser parser, TokenReadEventArgs args)
+        {
+            string info = $"{args.Token.Text} \t{args.Token.Symbol.Id} \t{(SymbolConstants)args.Token.Symbol.Id} ";
+
+            listBox2.Items.Add(info);
+
         }
 
     }

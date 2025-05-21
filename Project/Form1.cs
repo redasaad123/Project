@@ -17,7 +17,7 @@ namespace Project
         public Form1()
         {
             InitializeComponent();
-            parser = new MyParser("pro.cgt",listBox1 );
+            parser = new MyParser("pro.cgt", listBox1 , listBox2 );
 
         }
 
@@ -26,15 +26,15 @@ namespace Project
 
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
+        
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             listBox1.Items.Clear();
+            listBox2.Items.Clear();
             parser.Parse(textBox1.Text);
         }
+
+        
     }
 }
